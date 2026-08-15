@@ -254,6 +254,12 @@ for creating and managing beans and resolving their dependencies.
 
 ## Stereotypes
 
+Stereotype annotations are annotations that indicate the role or responsibility of a class within 
+a Spring application and allow Spring to discover it as a component through component scanning.
+
+Main stereotypes:
+
+- `@Component`
 - `@Repository`
 - `@Service`
 - `@Controller`
@@ -267,4 +273,3 @@ for creating and managing beans and resolving their dependencies.
     - optionally `@ComponentScan`
 - **Annotation-based component registration**
     - `@ComponentScan` + stereotypes: `@Component`, `@Serivce`, `@Repository`, `@Controller`...
-
