@@ -1,0 +1,134 @@
++--------------------------------------------------------------------------------------------------+
+|                                      Spring AOP                                                  |
++--------------------------------------------------------------------------------------------------+
+
+1. AOP + core concepts
+
+    AOP - Aspect-Oriented Programming - programming paradigm used to separate cross-cutting
+                                        concerns from the app's core business logic
+
+    Cross-cutting concern - functionality that affects multiple parts of the application
+                            and is separate from core business logic
+                                Examples:
+                                    * logging
+                                    * security
+                                    * transactions
+
+    Join point - a point during program execution where an aspect could be applied; in Spring AOP
+                 it's always method execution
+                     (!) in AspectJ there are more types of join points
+
+    Aspect - encapsulation of a cross-cutting concern; defined by annotating class with @Aspect;
+             contains:
+             * advice    - defines WHAT behavior should be executed
+             * pointcuts - define WHERE the behavior should be applied
+
+    Advice - action or behavior that an aspect applies at a particular point in the execution of
+             the program; in Spring AOP it's typically implemented as a method annotated with:
+             * @Before
+             * @After
+             * @AfterReturning
+             * @AfterThrowing
+             * @Around
+
+    Pointcut - expression used to select the join points where an advice should be applied;
+               defined by annotating method with @Pointcut(expression-matching-join-points-here)
+
+    Advice annotations:
+
+        @Before - advice annotation that tells Spring to execute annotated advice method before the
+                  selected join point
+
+        @After - advice annotation that tell Spring to execute annotated advice method after the
+                 target method finishes, regardless of whether the method returns normally or
+                 throws exception
+
+        @AfterReturning - advice annotation that tells Spring to execute annotate advice method
+                          after the target method finishes normally
+
+        @AfterThrowing - advice annotation that tells Spring to execute annotate advice method
+                         after the target method throws exception
+
+        @Around - advice surrounds the target method execution and gives advice control over
+                  whether and how the target method proceeds; it can:
+                  * execute logic before and after the method
+                  * modify arguments or return values
+                  * handle exceptions or even prevent the method from executing by not calling
+                    proceed().
+                      (*) Spring's Transactional behavior is heavily based on this kind of proxy
+                          interception.
+
++--------------------------------------------------------------------------------------------------+
+
+2. Spring AOP proxy
+
+    Spring AOP proxy - object created by Spring that wraps a target bean and intercepts
+                       method calls to apply aspects such as logging or transactions
+                       before delegating to the actual bean; can be implemented with:
+
+                       JDK dynamic proxy - interface-based proxy; it proxies interfaces, not
+                                           concrete classes, so if the bean implements an
+                                           interface, Spring can use a JDK proxy.
+
+                       CGLIB proxy - class-based proxy; instead of requiring an interface, it
+                                     creates a subclass of the target and overrides methods to
+                                     intercept calls.
+
+    Limitations:
+    * self-invocation - only calls that go through the proxy are intercepted, so if a method in
+                        a bean calls another method on the same bean using this, the call bypasses
+                        Spring proxy
+    * has limitations with final methods/classes depending on proxy mechanism
+    * as opposed to AspectJ that can intercept broader range of join points, only join point
+      available is method execution
+
++--------------------------------------------------------------------------------------------------+
+
+3. Transactions
+
+    @Transactional - declares that a method or class should execute within transaction;
+                     Spring then uses AOP proxy to:
+                         * start a transaction before the method executes
+                         * commit the transaction if the method completes successfully
+                         * rollback the transaction when the applicable rollback rules are
+                           triggered, e.g. some exception is thrown
+
+    Transaction propagation - defines what should happen when a transactional method is called
+                              while another transaction is already active
+
+                              * REQUIRED     - default; use the existing transaction if exists;
+                                               otherwise create a new one
+                              * REQUIRES_NEW - always create a new transaction; suspend the
+                                               existing one if necessary
+                              * MANDATORY    - there must already be a transaction; otherwise
+                                               throw exception
+                              * SUPPORTS     - use the existing transaction if there is one;
+                                               otherwise execute without transaction
+                              * NEVER        -
+                              * NESTED       -
+
+    Transaction isolation - controls how much one transaction can see the intermediate changes
+                            made by other concurrent transactions:
+
+                            * READ_UNCOMMITTED - weakest isolation level; can read uncommitted
+                                                 changes made by other transactions
+                            * READ_COMMITTED   - can only read committed changes from other
+                                                 transactions
+                            * REPEATABLE_READ  - once row is read, re-reading it within the same
+                                                 transaction gives the same result
+                            * SERIALIZABLE     - strongest isolation level - transactions behave as
+                                                 if they wer executed one after another
+
+                            (!) Default isolation level depends on the DB, e.g. if using
+                                PostgreSQL, it's READ_COMMITTED
+
+    Rollback rules:
+        * Runtime exceptions -> rollback by default
+        * Checked exceptions -> no rollback by default
+        * Can be set with rollbackFor, noRollbackFor. e.g.
+
+            @Transactional(rollbackFor = IOException.class)
+
+    Read-only transactions - used for operations intended to read data:
+
+        @Transactional(readOnly = true)

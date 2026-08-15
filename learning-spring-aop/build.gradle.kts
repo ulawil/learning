@@ -14,6 +14,8 @@ dependencies {
     implementation("org.springframework:spring-context:6.2.12")
     // spring aop
     implementation("org.springframework:spring-aop:6.2.12")
+    // more annotations
+    implementation("org.aspectj:aspectjweaver:1.9.24")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")

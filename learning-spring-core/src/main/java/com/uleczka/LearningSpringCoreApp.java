@@ -8,7 +8,7 @@ import com.uleczka.beans.scoped.MySingletonBean;
 import com.uleczka.config.MyConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class LearningSpringApp {
+public class LearningSpringCoreApp {
     static void main() {
 
         try (AnnotationConfigApplicationContext context =
