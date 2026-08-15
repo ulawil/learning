@@ -12,6 +12,7 @@ repositories {
 dependencies {
     // spring core
     implementation("org.springframework:spring-context:6.2.12")
+    // spring web
     implementation("org.springframework:spring-web:7.0.8")
     // jakarta for @PostConstruct
     implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")

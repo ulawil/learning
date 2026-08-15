@@ -1,4 +1,4 @@
-# Spring
+# Spring core
 
 - [Inversion of Control](#inversion-of-control)
 - [Dependency Injection](#dependency-injection)
