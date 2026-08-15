@@ -1,0 +1,155 @@
++--------------------------------------------------------------------------------------------------+
+|                                            Spring                                                |
++--------------------------------------------------------------------------------------------------+
+
+    Spring - an open-source Java framework/ecosystem for building applications, providing
+             infrastructure for:
+                * IoC
+                * DI
+                * bean management
+                * AOP
+                * transactions
+                * web development
+                * security
+             and more
+
++--------------------------------------------------------------------------------------------------+
+|                                    Inversion of Control                                          |
++--------------------------------------------------------------------------------------------------+
+
+    Inversion of Control - the principle in which the responsibility for creating, configuring
+                           and managing objects is transferred from the application code to
+                           Spring IoC container; instead of a class creating its own dependencies,
+                           the container creates the objects and provides their dependencies;
+                           the main ways Spring achieves IoC is Dependency Injection
+
++--------------------------------------------------------------------------------------------------+
+|                                    Dependency Injection                                          |
++--------------------------------------------------------------------------------------------------+
+
+    Dependency Injection - a technique for achieving Inversion of Control where an object's
+                           dependencies are provided to it from outside, typically by the Spring
+                           IoC container, instead of the objects creating those dependencies
+                           itself
+
+    Benefits:
+        * loose coupling
+        * easier testing
+        * better maintainability
+
+
+    Dependency injection types:
+        * Constructor injection - preferred
+            * makes required dependencies explicit
+            * allows for final dependencies
+            * avoids NPE
+        * Setter injection - useful for optional dependencies
+            * does not allow final dependencies
+            * can lead to NPE
+        * Field injection
+            * does not allow for final dependencies
+            * can lead to NPE
+            * discouraged because of hidden dependencies issue
+
+
+    @Autowired - Dependencies are injected if annotated with @Autowired (unless the class has
+                 single constructor, in which case it's not required in newer Spring versions)
+
+
+    No unique bean conflict - happens when there is more than 1 type of bean and Spring doesn't
+                              know which to inject; can be fixed by:
+
+                              1. Use @Qualifier on the bean and when autowiring
+                              2. Use @Qualifier when autowiring and provide bean name (bean name
+                                 is a fallback for no qualifier)
+                              3. Use @Primary on one of the beans (! - @Qualifier takes priority
+                                 over @Primary)
+
++--------------------------------------------------------------------------------------------------+
+|                                         Spring bean                                              |
++--------------------------------------------------------------------------------------------------+
+
+    Spring bean - an object that is instantiated, configured and managed by the Spring IoC
+                  container. The container is responsible for managing the bean's lifecycle and
+                  dependencies.
+
+
+    Ways to create a bean:
+        1. Annotate class with @Component and enable @ComponentScan on @Configuration class
+        2. In @Configuration class, create a method returning the bean annotated with @Bean
+
+
+    Bean scopes
+        * singleton   - default scope; one instance per ApplicationContext
+        * prototype   - new instance each time the bean is requested
+        * request     - one instance per Http request
+        * session     - one instance per Http session
+        * application - one instance per ServletContext
+        * websocket   - one instance per WebSocket session
+
+        -> Set with @Scope, if not provided it's singleton
+
+
+    Bean lifecycle
+        1. Bean instantiated
+        2. Bean's dependencies injected
+        3. Aware callbacks called:
+            * BeanNameAware::setBeanName
+            * BeanFactoryAware::setBeanFactory
+            * ApplicationContextAware::setApplicationContext
+        4. BeanPostProcessor::postProcessBeforeInitialization called
+        5. Init methods called:
+            * @PostConstruct
+            * InitializingBean::afterPropertiesSet
+            * @Bean's initMethod
+        6. BeanPostProcessor::postProcessAfterInitialization called
+
+        Bean is ready to use until context is closed, then:
+
+        1. Destroy methods called:
+            * @PreDestroy
+            * DisposableBean::destroy
+            * @Bean's destroyMethod
+
++--------------------------------------------------------------------------------------------------+
+|                                ApplicationContext, BeanFactory                                   |
++--------------------------------------------------------------------------------------------------+
+
+    ApplicationContext - Spring's central IoC container, responsible for creating, configuring
+                         and managing beans and their dependencies, also provides additional
+                         features such as even handling and resource loading.
+
+
+    BeanFactory - basic IoC container interface in Spring; provides fundamental functionality
+                  for creating and managing beans and resolving their dependencies.
+
++--------------------------------------------------------------------------------------------------+
+|                                          Stereotypes                                             |
++--------------------------------------------------------------------------------------------------+
+
+    Stereotypes - annotations that indicate the role or responsibility of a class within a Spring
+                  application and allow Spring to discover it as a component through component
+                  scanning.
+
+
+    Main stereotypes:
+        * @Component
+        * @Repository
+        * @Service
+        * @Controller
+
++--------------------------------------------------------------------------------------------------+
+|                                         Configuration                                            |
++--------------------------------------------------------------------------------------------------+
+
+    Configuration types:
+
+        XML configuration:
+            * beans are defined in XML file
+
+        Java configuration:
+            * beans are defined in @Configuration class with @Bean methods
+            * optionally @ComponentScan
+
+        Annotation-based component registration
+            * @ComponentScan + stereotypes: @Component, @Serivce, @Repository, @Controller...
