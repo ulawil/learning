@@ -1,0 +1,76 @@
++--------------------------------------------------------------------------------------------------+
+|                                         Spring MVC                                               |
++--------------------------------------------------------------------------------------------------+
+
+    DispatcherServlet - central servlet in Spring MVC that receives incoming HTTP requests
+                        and dispatches them to the appropriate controller/handler
+
+
+    Mappings:
+        * @RequestMapping -  general purpose request mapping annotation
+            Specialized annotations:
+                * @GetMapping      -> @RequestMapping(method = GET)
+                * @PostMapping     -> @RequestMapping(method = POST)
+                * @PutMapping      -> @RequestMapping(method = PUT)
+                * @PatchMapping    -> @RequestMapping(method = PATCH)
+                * @DeleteMapping   -> @RequestMapping(method = DELETE)
+
+
+    @PathVariable vs @RequestParam vs @RequestBody
+        * @PathVariable - binds a value from the URL path toa controller method parameters
+        * @RequestParam - binds a value from the URL's query parameters to a controller method
+                          parameters
+        * @RequestBody  - binds the HTTP request body to a controller method parameter; typically
+                          deserializing JSON into a Java object
+
+
+    HttpMessageConverter - bean configured by Spring used by Spring MVC to convert HTTP requests
+                           into Java objects
+
+
+    @Controller vs @RestController
+        * @Controller     - marks class as a Spring MVC controller; methods typically return
+                            view names which are resolved to views/templates;
+        * @RestController - @Controller + @ResponseBody - makes methods return data directly
+                            as HTTP response bodies; commonly used for REST APIs
+
+
+    Response status
+        By default, Spring returns 200 OK for a successful controller method; can be changes by:
+            * @ResponseStatus
+            * explicitly returning ResponseEntity
+
+
+    Error handling
+        @RestControllerAdvice annotated class + @ExceptionHandler annotated methods
+
+
+    Validation
+        * @Valid - tells Spring to validate object against its validation constraints before
+                   controller method executes; if validation fails, exception is thrown
+                   and the controller method isn't executed
+                       Constraints:
+                           * @NotNull
+                           * @NotEmpty
+                           * @NotBlank
+                           * @Size
+                           * @Min
+                           * @Max
+                           * @Positive
+                           * @PositiveOrZero
+                           * @Negative
+                           * @NegativeOrZero
+                           * @DecimalMin
+                           * @DecimalMax
+                           * @Email
+                           * @Pattern
+                           * @Past
+                           * @PastOrPresent
+                           * @Future
+                           * @FutureOrPresent
+                           * @AssertTrue
+                           * @AssertFalse
+
+
+    @RequestHeader              - get request header as a controller method parameter
+    @CookieValue("cookieName")  - get cookie value as a controller method parameter
