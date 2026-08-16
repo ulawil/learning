@@ -1,0 +1,96 @@
++--------------------------------------------------------------------------------------------------+
+|                                         Spring Boot                                              |
++--------------------------------------------------------------------------------------------------+
+
+    Spring Boot - project built on top of Spring that simplifies creating and running Spring
+                  applications by providing:
+                      * autoconfiguration
+                      * starters
+                      * externalized configuration
+                      * embedded servers
+                      * sensible defaults
+                  reducing the amount of manual configuration required
+
+
+    Autoconfiguration - Spring Boot automatically configures the application based on:
+                            * dependencies on the classpath
+                            * existing beans
+                            * configuration properties
+                        reducing the need for manual configuration.
+
+
+    Starter - dependency bundle that provides the libraries typically needed for a particular
+              feature, allowing us to add that functionality without manually declaring each
+              dependency, e.g.
+                  * spring-boot-starter-web      -> web/Spring MVC
+                  * spring-boot-starter-data-jpa -> JPA/HIbernate/Spring Data
+                  * spring-boot-starter-security -> Spring Security
+                  * spring-boot-starter-test     -> testing dependencies
+
+
+    Externalized configuration - keeping app config outside the app code; allows the same
+                                 app artifact to run with different configuration in different
+                                 environments; Spring Boot supports config from sources such as:
+                                     * .yaml files
+                                     * .properties files
+                                     * environmental variables
+                                     * system properties
+                                     * command line args
+
+
+    Profile - named set of configuration properties that can be activated to conditionally
+              configure an application; e.g. application-dev.yml, application-prod.yml...
+
+              Set with SPRING_PROFILES_ACTIVE=...
+
+
+    @SpringBootApplication - composed annotation that combines:
+        * @SpringBootConfiguration
+        * @EnableAutoConfiguration
+        * @ComponentScan
+
+
+    @Value vs @ConfigurationProperties
+        * @Value - used to inject individual configuration properties
+        * @ConfigurationProperties - binds a group of related properties into a structured
+                                   object, making it better suited for larger or hierarchical
+                                   configuration; provides type-safe binding
+
+
+    Embedded server - webserver packaged with the application, allowing Spring Boot web app
+                      to run as a standalone JAR without requiring an externally installed app
+                      server; Spring Boot commonly uses embedded:
+                          * Tomcat for Spring MVC
+                          * Netty for WebFlux
+
+
+    Actuator - provides production-ready monitoring and management features by exposing endpoints
+               that provide info about application's health, metrics, configuration and runtime
+               state.
+
+
+    SpringApplication - class responsible for bootstrapping the app; it:
+                            * creates/confgures ApplicationContext
+                            * loads configuration
+                            * triggers autoconfiguration
+                            * handles profiles/environment
+                            * starts the embedded server for web apps
+
++--------------------------------------------------------------------------------------------------+
+|                                   Spring vs Spring Boot                                          |
++--------------------------------------------------------------------------------------------------+
+
+    Spring Framework
+    ├── Spring Core / IoC
+    ├── Spring AOP
+    ├── Spring Transactions
+    ├── Spring MVC       ← web framework
+    ├── Spring Data*     ← separate Spring project
+    └── Spring Security* ← separate Spring project
+
+    Spring Boot
+    └── makes using these things easier
+        ├── autoconfiguration
+        ├── starters
+        ├── embedded servers
+        └── externalized configuration
