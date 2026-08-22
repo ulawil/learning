@@ -2,108 +2,97 @@
 |                                       Java collections                                           |
 +--------------------------------------------------------------------------------------------------+
 
-    ArrayList - data structure for storing sequences
+    ArrayList - collection for storing sequences
                 * fast random access O(1)
                 * append: O(1) amortized
                 * insertion/removal in the middle O(n)
 
-    Internals:
-        * Internally backed by an array
+
+        Internals:
+            * Internally backed by an array
 
 +--------------------------------------------------------------------------------------------------+
 
-    LinkedList - data structure for storing sequences
+    LinkedList - collection for storing sequences
                  * random access O(n)
                  * insertion/removal at known node/ends O(1)
                  * generally less efficient that ArrayList
 
-    Internals:
-        * Internally backed by liked nodes
+
+        Internals:
+            * Internally backed by liked nodes
 
 +--------------------------------------------------------------------------------------------------+
 
-    HashMap - data structure for storing key-value pairs that offers O(1) complexity for
+    CopyOnWriteArrayList - thread-safe alternative to ArrayList that achieves thread-safety by
+                           creating a copy of the underlying array on every write
+                           * reads can happen without locking and are very efficient
+                           * existing iterators see the snapshot of the array that existed when
+                             the iterator was created
+
+
+        Use cases:
+            * more reads than writes
+
++--------------------------------------------------------------------------------------------------+
+
+    HashMap - "collection" for storing key-value pairs that offers O(1) complexity for
               get/put operations on average (can degrade with collisions)
 
 
-    Internals:
-        * Internally represented as an array of buckets
-            * Buckets initially use linked lists
-            * Buckets may be converted to red-black trees when sufficiently large
-        * The array is resized when size > capacity × loadFactor
+        Internals:
+            * Internally represented as an array of buckets
+                * Buckets initially use linked lists
+                * Buckets may be converted to red-black trees when sufficiently large
+            * The array is resized when size > capacity × loadFactor
 
-        Size vs Capacity:
-            * Size     - number of key-value pairs currently stored
-            * Capacity - number of buckets in the internal array
+            Size vs Capacity:
+                * Size     - number of key-value pairs currently stored
+                * Capacity - number of buckets in the internal array
 
-        Defaults:
-            * loadFactor: 0.75
-            * initial capacity: 16
+            Defaults:
+                * loadFactor: 0.75
+                * initial capacity: 16
 
 
-    How it works:
-        Put:
-            1. Compute a hash from the key's hashCode()
-            2. Use the hash to determine the bucket
-            3. Check entries already in that bucket
-                a. If a key for which equals() is true is found -> replace its value
-                b. If no equal key exists                       -> add a new entry
+        How it works:
+            Put:
+                1. Compute a hash from the key's hashCode()
+                2. Use the hash to determine the bucket
+                3. Check entries already in that bucket
+                    a. If a key for which equals() is true is found -> replace its value
+                    b. If no equal key exists                       -> add a new entry
 
-    Null key handling:
-        1 null key allowed
 
-+--------------------------------------------------------------------------------------------------+
-
-    HashSet - data structure for storing unique elements that offers O(1) complexity for a
-              add/contains operations
-
-    Internals:
-        * Internally it is backed by a HashMap
-            * key   -> set element
-            * value -> dummy constant object
+        Null key handling:
+            1 null key allowed
 
 +--------------------------------------------------------------------------------------------------+
 
-    LinkedHashMap - data structure wth all functionalities of a HashMap while also preserving
+    LinkedHashMap - "collection" wth all functionalities of a HashMap while also preserving
                     insertion order
 
-    Internals:
-        * Internally backed by a hashtable + a doubly linked list for preserving order of inserts
-
-+--------------------------------------------------------------------------------------------------+
-
-    LinkedHashSet - data structure with all functionalities of a HashSet while also preserving
-                    insertion order
-
-    Internals:
-        * Internally backed by a LinkedHashMap
-            * key   -> set element
-            * value -> dummy constant object
-
-+--------------------------------------------------------------------------------------------------+
-
-    TreeMap - data structure for storing sorted key-value pairs that offers O(log n) complexity
-              for get/put operations
-
-    Internals:
-        * Internally represented as a red-black tree
-        * Keys are ordered by their natural ordering or a provided comparator
-
-        Natural ordering - key must implement Comparable
-
-    Null key handling:
-        * null not allowed with natural ordering
-        * null allowed if handled in provided comparator
-
-+--------------------------------------------------------------------------------------------------+
-
-    TreeSet - data structure for storing unique elements that offers O(log n) complexity
-              for add/contains operations
 
         Internals:
-            * Internally backed by a TreeMap
-                * key   -> set element
-                * value -> dummy constant object
+            * Internally backed by a hashtable + a doubly linked list for preserving order of
+              inserts
+
++--------------------------------------------------------------------------------------------------+
+
+    TreeMap - "collection" for storing sorted key-value pairs that offers O(log n) complexity
+              for get/put operations
+
+
+        Internals:
+            * Internally represented as a red-black tree
+            * Keys are ordered by their natural ordering or a provided comparator
+
+            Natural ordering - key must implement Comparable
+
+
+        Null key handling:
+            * null not allowed with natural ordering
+            * null allowed if handled in provided comparator
 
 +--------------------------------------------------------------------------------------------------+
 
@@ -118,14 +107,36 @@
 
 +--------------------------------------------------------------------------------------------------+
 
-    CopyOnWriteArrayList - thread-safe alternative to ArrayList that achieves thread-safety by
-                           creating a copy of the underlying array on every write
-                           * reads can happen without locking and are very efficient
-                           * existing iterators see the snapshot of the array that existed when
-                             the iterator was created
+    HashSet - collection for storing unique elements that offers O(1) complexity for a
+              add/contains operations
 
-    Use cases:
-        * more reads than writes
+
+        Internals:
+            * Internally it is backed by a HashMap
+                * key   -> set element
+                * value -> dummy constant object
+
++--------------------------------------------------------------------------------------------------+
+
+    LinkedHashSet - collection with all functionalities of a HashSet while also preserving
+                    insertion order
+
+
+        Internals:
+            * Internally backed by a LinkedHashMap
+                * key   -> set element
+                * value -> dummy constant object
+
++--------------------------------------------------------------------------------------------------+
+
+    TreeSet - collection for storing unique elements that offers O(log n) complexity
+              for add/contains operations
+
+
+        Internals:
+            * Internally backed by a TreeMap
+                * key   -> set element
+                * value -> dummy constant object
 
 +--------------------------------------------------------------------------------------------------+
 
@@ -134,15 +145,15 @@
                     * Blocks when queue is empty (consumer waits)
 
 
-    Implementations:
-        * ArrayBlockingQueue - implementation of BlockingQueue backed by a fixed size array
-                               * capacity is fixed when queue is created
-                               * uses one lock for put and take operations
+        Implementations:
+            * ArrayBlockingQueue - implementation of BlockingQueue backed by a fixed size array
+                                   * capacity is fixed when queue is created
+                                   * uses one lock for put and take operations
 
-        * LinkedBlockingQueue - implementation of BlockingQueue backed by a linked list
-                                * capacity can be optionally provided
-                                * uses separate locks for put and take operations, allowing
-                                  producer and consumer to work concurrently
+            * LinkedBlockingQueue - implementation of BlockingQueue backed by a linked list
+                                    * capacity can be optionally provided
+                                    * uses separate locks for put and take operations, allowing
+                                      producer and consumer to work concurrently
 
 +--------------------------------------------------------------------------------------------------+
 
