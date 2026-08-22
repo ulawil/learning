@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/learning-java" />
             <option value="$PROJECT_DIR$/learning-spring-aop" />
             <option value="$PROJECT_DIR$/learning-spring-boot" />
             <option value="$PROJECT_DIR$/learning-spring-core" />

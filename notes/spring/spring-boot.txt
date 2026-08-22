@@ -75,22 +75,3 @@
                             * triggers autoconfiguration
                             * handles profiles/environment
                             * starts the embedded server for web apps
-
-+--------------------------------------------------------------------------------------------------+
-|                                   Spring vs Spring Boot                                          |
-+--------------------------------------------------------------------------------------------------+
-
-    Spring Framework
-    ├── Spring Core / IoC
-    ├── Spring AOP
-    ├── Spring Transactions
-    ├── Spring MVC       ← web framework
-    ├── Spring Data*     ← separate Spring project
-    └── Spring Security* ← separate Spring project
-
-    Spring Boot
-    └── makes using these things easier
-        ├── autoconfiguration
-        ├── starters
-        ├── embedded servers
-        └── externalized configuration

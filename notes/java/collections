@@ -1,0 +1,195 @@
++--------------------------------------------------------------------------------------------------+
+|                                       Java collections                                           |
++--------------------------------------------------------------------------------------------------+
+
+    ArrayList - data structure for storing sequences
+                * fast random access O(1)
+                * append: O(1) amortized
+                * insertion/removal in the middle O(n)
+
+    Internals:
+        * Internally backed by an array
+
++--------------------------------------------------------------------------------------------------+
+
+    LinkedList - data structure for storing sequences
+                 * random access O(n)
+                 * insertion/removal at known node/ends O(1)
+                 * generally less efficient that ArrayList
+
+    Internals:
+        * Internally backed by liked nodes
+
++--------------------------------------------------------------------------------------------------+
+
+    HashMap - data structure for storing key-value pairs that offers O(1) complexity for
+              get/put operations on average (can degrade with collisions)
+
+
+    Internals:
+        * Internally represented as an array of buckets
+            * Buckets initially use linked lists
+            * Buckets may be converted to red-black trees when sufficiently large
+        * The array is resized when size > capacity × loadFactor
+
+        Size vs Capacity:
+            * Size     - number of key-value pairs currently stored
+            * Capacity - number of buckets in the internal array
+
+        Defaults:
+            * loadFactor: 0.75
+            * initial capacity: 16
+
+
+    How it works:
+        Put:
+            1. Compute a hash from the key's hashCode()
+            2. Use the hash to determine the bucket
+            3. Check entries already in that bucket
+                a. If a key for which equals() is true is found -> replace its value
+                b. If no equal key exists                       -> add a new entry
+
+    Null key handling:
+        1 null key allowed
+
++--------------------------------------------------------------------------------------------------+
+
+    HashSet - data structure for storing unique elements that offers O(1) complexity for a
+              add/contains operations
+
+    Internals:
+        * Internally it is backed by a HashMap
+            * key   -> set element
+            * value -> dummy constant object
+
++--------------------------------------------------------------------------------------------------+
+
+    LinkedHashMap - data structure wth all functionalities of a HashMap while also preserving
+                    insertion order
+
+    Internals:
+        * Internally backed by a hashtable + a doubly linked list for preserving order of inserts
+
++--------------------------------------------------------------------------------------------------+
+
+    LinkedHashSet - data structure with all functionalities of a HashSet while also preserving
+                    insertion order
+
+    Internals:
+        * Internally backed by a LinkedHashMap
+            * key   -> set element
+            * value -> dummy constant object
+
++--------------------------------------------------------------------------------------------------+
+
+    TreeMap - data structure for storing sorted key-value pairs that offers O(log n) complexity
+              for get/put operations
+
+    Internals:
+        * Internally represented as a red-black tree
+        * Keys are ordered by their natural ordering or a provided comparator
+
+        Natural ordering - key must implement Comparable
+
+    Null key handling:
+        * null not allowed with natural ordering
+        * null allowed if handled in provided comparator
+
++--------------------------------------------------------------------------------------------------+
+
+    TreeSet - data structure for storing unique elements that offers O(log n) complexity
+              for add/contains operations
+
+        Internals:
+            * Internally backed by a TreeMap
+                * key   -> set element
+                * value -> dummy constant object
+
++--------------------------------------------------------------------------------------------------+
+
+    Collections.synchronizedMap - thread-safe wrapper around a map that synchronizes individual
+                                  operations
+
++--------------------------------------------------------------------------------------------------+
+
+    ConcurrentHashMap - thread-safe alternative to HashMap that achieves thread-safety by
+                        * utilizing CAS (compare-and-swap) for certain operations
+                        * localized locking (e.g. locking a specific bucket when necessary)
+
++--------------------------------------------------------------------------------------------------+
+
+    CopyOnWriteArrayList - thread-safe alternative to ArrayList that achieves thread-safety by
+                           creating a copy of the underlying array on every write
+                           * reads can happen without locking and are very efficient
+                           * existing iterators see the snapshot of the array that existed when
+                             the iterator was created
+
+    Use cases:
+        * more reads than writes
+
++--------------------------------------------------------------------------------------------------+
+
+    BlockingQueue - thread-safe queue commonly used for producer-consumer scenarios
+                    * Blocks when queue is full  (producer waits)
+                    * Blocks when queue is empty (consumer waits)
+
+
+    Implementations:
+        * ArrayBlockingQueue - implementation of BlockingQueue backed by a fixed size array
+                               * capacity is fixed when queue is created
+                               * uses one lock for put and take operations
+
+        * LinkedBlockingQueue - implementation of BlockingQueue backed by a linked list
+                                * capacity can be optionally provided
+                                * uses separate locks for put and take operations, allowing
+                                  producer and consumer to work concurrently
+
++--------------------------------------------------------------------------------------------------+
+
+    ConcurrentLinkedQueue - thread-safe, non-blocking implementation of queue
+                            * Unbounded - doesn't block when adding elements
+                            * Doesn't block when queue is empty (returns null)
+
++--------------------------------------------------------------------------------------------------+
+
+    ConcurrentSkipListMap
+
++--------------------------------------------------------------------------------------------------+
+
+    ConcurrentSkipListSet
+
++--------------------------------------------------------------------------------------------------+
+
+    BlockingDeque
+
++--------------------------------------------------------------------------------------------------+
+
+    ConcurrentLinkedDeque
+
++--------------------------------------------------------------------------------------------------+
+
+    Collections Comparison:
+
+        Lists:
+            ArrayList            - storing sequences; backed by array
+            LinkedList           - storing sequences; backed by linked nodes
+            CopyOnWriteArrayList - storing sequences + thread safety; use when reads > writes
+
+        Maps:
+            HashMap           - storing k/v pairs
+            LinkedHashMap     - storing k/v pairs with preserved insertion order
+            TreeMap           - storing k/v pairs sorted by key
+            ConcurrentHashMap - storing k/v pairs + thread safety
+
+        Sets:
+            HashSet       - storing unique values
+            LinkedHashSet - storing unique values with preserved insertion order
+            TreeSet       - storing unique values in sorted order
+
+        Queues:
+            BlockingQueue           - interface; FIFO; producer-consumer; blocking
+                ArrayBlockingQueue  - BlockingQueue backed by an array
+                LinkedBlockingQueue - BlockingQueue backed by linked nodes
+            ConcurrentLinkedQueue   - FIFO; producer-consumer; non-blocking
+
++--------------------------------------------------------------------------------------------------+
